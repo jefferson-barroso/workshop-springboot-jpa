@@ -4,11 +4,14 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -18,41 +21,47 @@ public class Order implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	@Id
+	@Id //mostra q o id é a chave primaria
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private Instant date;
 	
+	private long id;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone="GMT")
+	private Instant moment;
 	//associação
-	@ManytoOne //associação na tabela  (Muitos para 1)
+
+	@ManyToOne //associação na tabela  (Muitos para 1)
 	@JoinColumn(name = "client_id") //como essa chave estrangeira vai tá na tabela
 	private User client; 
 	
 	public Order() {
 		
 	}
+	
+	
 
-	public Order(Long id, Instant date, User client) {
+	public Order(long id, Instant moment, User client) {
 		super();
 		this.id = id;
-		this.date = date;
+		this.moment = moment;
 		this.client = client;
 	}
 
-	public Long getId() {
-		return id;
+
+
+	public long getId() {
+		return  id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
-	public Instant getDate() {
-		return date;
+	public Instant getMoment() {
+		return moment;
 	}
 
-	public void setDate(Instant date) {
-		this.date = date;
+	public void setMoment(Instant moment) {
+		this.moment = moment;
 	}
 
 	public User getClient() {
@@ -81,4 +90,7 @@ public class Order implements Serializable {
 	}
 	
 	
+
+
+
 }
